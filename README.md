@@ -1,41 +1,94 @@
-# Teste Api de Investimento
-Este é um projeto de API para gerenciamento de investimentos. A API permite a criação de investimentos, retiradas e visualização de investimentos existentes. O projeto foi desenvolvido utilizando PHP 8.3, Symfony 7, MySQLi 8 e Docker.
+
+# API de Investimentos
+
+
+
+## Documentação da API
+
+Esta é uma API de investimentos desenvolvida em PHP 8.3 utilizando o framework Symfony 5, banco de dados MySQL 8 e gerenciada via Docker. A API permite criar, visualizar e retirar investimentos, além de aplicar regras de imposto sobre saque baseadas no tempo do investimento. A autenticação é feita via JWT.
+Os testes da API foram realizados utilizando Postman.
+
+
+
 
 ## Tecnologias Utilizadas
 
-- **PHP 8.3**: A linguagem de programação utilizada para desenvolver a API.
-- **Symfony 7**: Framework PHP para o desenvolvimento da API.
-- **MySQLi 8**: Biblioteca para interação com o banco de dados MySQL.
-- **Docker**: Utilizado para containerização da aplicação, garantindo que o ambiente de desenvolvimento e produção seja o mesmo.
-- **Postman**: Utilizado para testar os EndPoints da aplicação.
+ - PHP 8.3
+ - Symfony 5
+ - MySQL 8
+ - Docker
+ - JWT para autenticação
 
-## Endpoints
 
-Abaixo estão os endpoints da API que foram implementados:
+## Como Utilizar a API
 
-### 1. Criação de Investimento
+### Subir o Container com Docker
+```bash
+docker-compose up -d
+```
+### Criar um Usuário para Autenticação
+Depois de subir os containers, crie um usuário para autenticação executando o seguinte comando dentro do container:
+```bash
+cli/console app:create-user 'seu-email@hotmail.com' 'sua-senha'
+```
+### Obter o Token de Autenticação
+Após criar o usuário, envie uma requisição POST para obter o token JWT:
+### EndPoint:
+ O token recebido deverá ser utilizado nas demais requisições da API, inserindo-o no cabeçalho Authorization como Bearer Token.
+ ```bash
+ [POST] http://127.0.0.1/api/login_check
+```   
+Exemplo: 
+ ```bash
+ {
+    "email": "email-cadastrado@hotmail.com",
+    "password": "senha"
+}
+```
+   
+## Endpoints Disponíveis
+### Endpoint de Criação de um Investimento:
+ ```bash
+[POST] http://127.0.0.1/api/investment/create
+```   
+Exemplo: 
+ ```bash
+{
+    "initial_value": "105500.00",
+    "created_at": "2025-03-11"
+}
+```
+### Endpoint de Retirada de um Investimento Criado:
+ ```bash
+[POST] http://127.0.0.1/api/investment/withdraw/{ID}
+```   
+### Visualizar um Investimento Específico:
+ ```bash
+[GET] http://127.0.0.1/api/investment/{ID}
+```   
+### Visualizar Todos os Investimentos Criados:
+ ```bash
+[GET] http://127.0.0.1/api/investments
+```   
 
-- **Endpoint**: `POST http://127.0.0.1/api/investment/create`
-- **Descrição**: Cria um novo investimento.
+## Autenticação
+Todos os endpoints (exceto login) exigem autenticação via JWT. Após obter o token, envie-o no cabeçalho da requisição:
+ ```bash
+ Authorization: Bearer SEU_TOKEN_AQUI
+```   
+Isso garante que apenas usuários autenticados consigam acessar os serviços da API.
 
-### 2. Retirada do Investimento 
 
-- **Endpoint**: `POST http://127.0.0.1/api/investment/investment/withdraw/{ID}`
-- **Descrição**: Faz a returada de investimento.
 
-### 3. Visualização do Investimento
 
-- **Endpoint**: `GET http://127.0.0.1/api/investment/{ID}`
-- **Descrição**: Visualização do investimento 
+## Testes com Postman
 
-## Configuração e Execução
+- Utilize o Postman para enviar requisições para os endpoints.
+- Após obter o token, adicione-o no cabeçalho Authorization como Bearer Token.
+- Execute as operações desejadas na API.
 
-- **Clonar Repositório**: (https://github.com/derianjr/api-investimento-test.git)
-- **Configuração do Docker**: Para rodar a aplicação utilizar o comando de Subir os containers e acessar o container PHP.
-- **Acessar a API**: A API estará disponível em http://127.0.0.1. No projeto foi utilizado o Postman como ferramenta para testar os endpoints.
 
 ## Licença
-Este projeto está licenciado sob a MIT License.
 
-
+[MIT](https://choosealicense.com/licenses/mit/)
 
